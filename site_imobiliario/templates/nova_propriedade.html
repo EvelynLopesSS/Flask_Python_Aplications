@@ -1,6 +1,15 @@
 {% extends "template.html" %}
 
 {% block content %}
+ <style>
+        .form-control {
+            border-radius: 10px;
+            background-color: transparent;
+            border-color: #ffc107;
+            font-size: small;
+            color: white;
+        }
+    </style>
     <div class="container">
         <h1>Nova Propriedade</h1>
 
@@ -54,34 +63,37 @@
                 </div>
 
                 <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="area">Área do Imóvel:</label>
-                        <input class="form-control" type="number" name="area" id="area">
+                    <div class="form-group row">
+                        <div class="col">
+                            <label for="area">Área do Imóvel:</label>
+                            <input class="form-control" type="number" name="area" id="area">
+                        </div>
+                        <div class="col">
+                            <label for="valor">Valor do Imóvel:</label>
+                            <input class="form-control" type="number" name="valor" id="valor">
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="valor">Valor do Imóvel:</label>
-                        <input class="form-control" type="number" name="valor" id="valor">
+                    <div class="form-group row">
+                        <div class="col">
+                            <label for="quartos">Quantidade de Quartos:</label>
+                            <input class="form-control" type="number" name="quartos" id="quartos">
+                        </div>
+                        <div class="col">
+                            <label for="suites">Quantidade de Suítes:</label>
+                            <input class="form-control" type="number" name="suites" id="suites">
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="quartos">Quantidade de Quartos:</label>
-                        <input class="form-control" type="number" name="quartos" id="quartos">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="suites">Quantidade de Suítes:</label>
-                        <input class="form-control" type="number" name="suites" id="suites">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="salas">Quantidade de Salas:</label>
-                        <input class="form-control" type="number" name="salas" id="salas">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="cozinhas">Quantidade de Cozinhas:</label>
-                        <input class="form-control" type="number" name="cozinhas" id="cozinhas">
+                    <div class="form-group row">
+                        <div class="col">
+                            <label for="salas">Quantidade de Salas:</label>
+                            <input class="form-control" type="number" name="salas" id="salas">
+                        </div>
+                        <div class="col">
+                            <label for="cozinhas">Quantidade de Cozinhas:</label>
+                            <input class="form-control" type="number" name="cozinhas" id="cozinhas">
+                        </div>
                     </div>
 
                     <div class="checkbox-column">
