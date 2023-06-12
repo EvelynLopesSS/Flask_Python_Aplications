@@ -11,89 +11,96 @@ import os
 import uuid
 from flask import send_file
 import random
+from flask import redirect
+from flask import request
+from bson.errors import InvalidId
+from babel import numbers
+
 
 
 
 app = Flask(__name__)
-client = MongoClient()
+client = MongoClient('')
 db = client['Imobiliaria']  # Nome do banco de dados no MongoDB
 collection = db['propriedades']  # Nome da coleção no MongoDB
 collection_acessos = db['acessos']  # Nome da coleção no MongoDB
 
-app.config['UPLOAD_FOLDER'] = r'C:/Users/...'
 RESULTS_PER_PAGE = 12  # Número de resultados por página
 
 
 @app.route('/')
 def index():
-
-
     return render_template('index.html')
 
 @app.route('/area_corretor')
 def area_corretor():
-    return render_template('area_corretor.html')
+    show_dashboard = request.args.get('dashboard', False)
+    cpf = request.args.get('cpf')
+
+    if cpf:
+        acesso_login = collection_acessos.find_one({'CPF_corretor': cpf})
+
+        if acesso_login:
+            nome_pessoa = acesso_login.get('nome_corretor', '')
+        else:
+            nome_pessoa = ''
+    else:
+        nome_pessoa = ''
+    total_documents = collection.count_documents({})
+    total_corretores = len(collection.distinct('corretor'))
+    total_vendidos = collection.count_documents({'vendido': True})
+
+
+
+
+    return render_template('area_corretor.html', show_dashboard=show_dashboard, nome_pessoa=nome_pessoa,
+                           total_documents=total_documents,total_corretores=total_corretores, total_vendidos=total_vendidos)
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         # Obter dados do formulário
-        cpf = request.form.get('cpf')
-        senha = request.form.get('senha')
+        cpf = request.form.get('CPF_corretor')
+        senha = request.form.get('senha_corretor')
         # Verificar se o email e senha estão corretos
         acesso_login = collection_acessos.find_one({'CPF_corretor': cpf, 'senha_corretor': senha})
         if acesso_login:
             # Credenciais corretas. Acesso permitido.
-            return redirect(url_for('area_corretor'))
-        else:
-            # Credenciais incorretas. Acesso negado.
-            return render_template('login.html', error_message='Credenciais incorretas.')
+            return redirect(url_for('area_corretor' , cpf=cpf))
+
 
     return render_template('login.html')
 
+
 @app.route('/cadastro_corretor', methods=['GET', 'POST'])
 def cadastro():
-    nome_corretor = None  # Definir um valor padrão para a variável
-    endereco_corretor= None
-    bairro_corretor= None
-    cidade_corretor= None
-    estado_corretor= None
-    email_corretor= None
-    senha_corretor= None
-    CPF_corretor = None
-
     if request.method == 'POST':
-        # Obter dados do formulário:
+        # Obter dados do formulário
         nome_corretor = request.form.get('nome_corretor')
-        endereco_corretor = request.form.get ('endereco_corretor')
-        bairro_corretor = request.form.get ('bairro_corretor')
-        cidade_corretor = request.form.get ('cidade_corretor')
-        estado_corretor = request.form.get ('estado_corretor')
-        email_corretor = request.form.get ('email_corretor')
-        senha_corretor = request.form.get ('senha_corretor')
+        endereco_corretor = request.form.get('endereco_corretor')
+        cidade_corretor = request.form.get('cidade_corretor')
+        estado_corretor = request.form.get('estado_corretor')
+        email_corretor = request.form.get('email_corretor')
+        senha_corretor = request.form.get('senha_corretor')
         CPF_corretor = request.form.get('CPF_corretor')
 
-
-    acessos = {
+        acessos = {
             'nome_corretor': nome_corretor,
-            'endereço_corretor': endereco_corretor,
-            'bairro_corretor': bairro_corretor,
-            'cidade_corretor':cidade_corretor,
-            'estado_corretor':estado_corretor,
+            'endereco_corretor': endereco_corretor,
+            'cidade_corretor': cidade_corretor,
+            'estado_corretor': estado_corretor,
             'email_corretor': email_corretor,
-            'senha_corretor':senha_corretor,
+            'senha_corretor': senha_corretor,
             'CPF_corretor': CPF_corretor
         }
 
-    collection_acessos.insert_one(acessos)
+        # Inserir os dados na coleção 'acessos'
+        collection_acessos.insert_one(acessos)
+
+        return render_template('cadastro_corretor.html')
 
     return render_template('cadastro_corretor.html')
-
-
-
-
-
 
 
 
@@ -168,6 +175,7 @@ def propriedades():
     estados = collection.distinct('estado')
     # Buscar as cidades cadastradas
     cidades = collection.distinct('cidade')
+    garagens = collection.distinct('garagem')
 
     # Aplicar o filtro na consulta ao banco de dados
     imoveis = collection.find(filtro).skip(start_index).limit(RESULTS_PER_PAGE)
@@ -193,11 +201,13 @@ def propriedades():
         else:
             imovel['valor_formatado'] = None
 
+
     return render_template('propriedades.html', imoveis=imoveis, current_page=page, pages=page_numbers,
                            has_prev=has_prev, has_next=has_next, prev_page=prev_page, next_page=next_page,
                            valor_min=valor_min, valor_max=valor_max, bairro=bairro, bairros=bairros,tipo=tipo,
                            tipos=tipos,quartos= quartos,quartoss=quartoss,cidade=cidade,estado=estado, estados=estados,
-                           cidades=cidades,ordenacao=ordenacao, direcao=direcao  )
+                           cidades=cidades,ordenacao=ordenacao, direcao=direcao, total_pages=total_pages, garagens=garagens  )
+
 
 
 @app.route('/propriedades/nova', methods=['GET', 'POST'])
@@ -205,50 +215,31 @@ def nova_propriedade():
     if request.method == 'POST':
         # Obter dados do formulário
         tipo = request.form.get('tipo')
+        proprietario= request.form.get('proprietario')
+        construtora= request.form.get('construtora')
+        nome_empreendimento = request.form.get('nome_empreendimento')
+        telfone=request.form.get('telefone')
+        cep = request.form.get('cep')
+        comissao=request.form.get('comissao')
         quartos = request.form.get('quartos')
         suites = request.form.get('suites')
         salas = request.form.get('salas')
         cozinhas = request.form.get('cozinhas')
-        valor = float(request.form.get('valor'))  # Convert to float
-        rua = request.form.get('rua')
+        garagem = request.form.get('garagem')
+        valor = float(request.form.get('valor'))  # Converter para float, por causa dos filtros.
+        endereco = request.form.get('endereco')
         numero = request.form.get('numero')
         bairro = request.form.get('bairro')
         cidade = request.form.get('cidade')
         estado = request.form.get('estado')
         area = request.form.get('area')
         descricao = request.form.get('descricao')
-        imagem = request.files['imagem']  # Obter o arquivo da imagem
-        imagem_path = None  # Assign a default value
-
-        #imagem_url = request.form.get('imagem')  # Obter a URL da imagem
-        # Download da imagem da URL pública
-        # if imagem_url:
-        #     response = requests.get(imagem_url)
-        #     if response.status_code == 200:
-        #         # Gerar um nome de arquivo único
-        #         temp_filename = str(uuid.uuid4()) + '.jpg'
-        #
-        #         # Salvar a imagem no sistema de arquivos
-        #         imagem_path = os.path.join(app.config['UPLOAD_FOLDER'], temp_filename)
-        #         with open(imagem_path, 'wb') as file:
-        #             file.write(response.content)
-        #     else:
-        #         imagem_path = None
-        # else:
-        #     imagem_path = None
-
-        #imagem = request.files['imagem']  # Obter o arquivo da imagem
-        # if imagem:
-        #     imagem_binaria = imagem.read()  # Ler os dados binários da imagem
-        #     imagem_codificada = base64.b64encode(imagem_binaria)  # Codificar a imagem em base64
-        #     imagem_base64 = imagem_codificada.decode('utf-8')  # Converter para uma string legível
-
 
         piscina = 'piscina' in request.form
         praia = 'praia' in request.form
         lazer = 'lazer' in request.form
-        quintal = 'quintal' in request.form
-        jardim = 'jardim' in request.form
+        festa = 'festa' in request.form
+        gourmet = 'gourmet' in request.form
         varanda = 'varanda' in request.form
         solarium = 'solarium' in request.form
         quadra = 'quadra' in request.form
@@ -257,53 +248,56 @@ def nova_propriedade():
         # Insira os valores na coleção de propriedades no MongoDB
         propriedade = {
             'tipo': tipo,
+            'proprietario': proprietario,
+            'construtora': construtora,
+            'nome_empreendimento': nome_empreendimento,
+            'telefone': telfone,
+            'cep':cep,
+            'comissao': comissao,
             'quartos': quartos,
             'suites': suites,
             'salas': salas,
             'cozinhas': cozinhas,
+            'garagem': garagem,
             'valor': valor,
-            'rua': rua,
+            'endereco': endereco,
             'numero': numero,
             'bairro': bairro,
             'cidade': cidade,
             'estado': estado,
             'area': area,
             'descricao': descricao,
-            'imagem': temp_filename if imagem_path else None,
-            #'imagem': imagem,
-            # 'imagem': imagem_base64,  # Salvar a imagem codificada em base64 no campo 'imagem'
-
             'piscina': piscina,
             'praia': praia,
             'lazer': lazer,
-            'quintal': quintal,
-            'jardim': jardim,
+            'festa': festa,
+            'gorumet': gourmet,
             'varanda': varanda,
             'solarium': solarium,
             'quadra': quadra,
             'elevador': elevador
         }
-        if imagem:
-            # Gerar um nome de arquivo único
-            temp_filename = str(uuid.uuid4()) + '.jpg'
 
-            # Salvar a imagem no sistema de arquivos
-            imagem_path = os.path.join(app.config['UPLOAD_FOLDER'], temp_filename)
-            imagem.save(imagem_path)
-
-            # Atualizar o documento da propriedade com o nome do arquivo
-            propriedade['imagem'] = temp_filename
         collection.insert_one(propriedade)
 
-        return redirect('/propriedades/sucesso')
+        return redirect(url_for('sucesso_propriedade'))
     else:
         return render_template('nova_propriedade.html')
 
 @app.route('/propriedades/sucesso')
+
 def sucesso_propriedade():
     return render_template('sucesso_propriedade.html')
 
-from babel import numbers
+@app.route('/propriedades/delete')
+def delete_secess():
+    return render_template('delete_sucess.html')
+
+@app.route('/propriedades/update')
+def update_secess():
+    return render_template('update_sucess.html')
+
+
 
 
 @app.route('/propriedades/<id>')
@@ -312,38 +306,14 @@ def exibir_propriedade(id):
     if exibir_imovel:
         valor = exibir_imovel.get('valor')
         if valor is not None:
-            locale = 'pt_BR'  # Set the appropriate locale for formatting currency
+            locale = 'pt_BR'  
             valor_formatado = format_currency(valor, 'BRL', locale=locale)
         else:
             valor_formatado = None
-        # Montar o caminho completo da imagem
-        imagem_filename = exibir_imovel.get('imagem')
-        if imagem_filename:
-            imagem_path = os.path.join(app.config['UPLOAD_FOLDER'], imagem_filename)
-            return send_file(imagem_path, mimetype='image/jpeg')
 
-        imagem_base64 = exibir_imovel.get('imagem_base64')
-        if imagem_base64:
-            imagem_decodificada = base64.b64decode(imagem_base64)
-            return send_file(io.BytesIO(imagem_decodificada), mimetype='image/jpeg')
-        else:
-            imagem_path = None
-
-        # imagem_base64 = None  # Inicialize a variável imagem_base64
-        #
-        # if 'imagem' in exibir_imovel:
-        #     imagem_base64 = exibir_imovel['imagem']
-        #
-        # if imagem_base64:
-        #     imagem_decodificada = base64.b64decode(imagem_base64)  # Decodificar a imagem em base64
-        #     return send_file(io.BytesIO(imagem_decodificada), mimetype='image/jpeg')
-
-        return render_template('exibir_propriedade.html', propriedade=exibir_imovel, valor_formatado=valor_formatado, imagem_path=imagem_path)
+        return render_template('exibir_propriedade.html', propriedade=exibir_imovel, valor_formatado=valor_formatado )
     else:
         return render_template('propriedade_nao_encontrada.html')
-
-
-
 
 
 
@@ -352,67 +322,65 @@ def editar_propriedade(id):
     if request.method == 'POST':
         # Obter dados do formulário
         tipo = request.form.get('tipo')
+        proprietario = request.form.get('proprietario')
+        construtora = request.form.get('construtora')
+        nome_empreendimento = request.form.get('nome_empreendimento')
+        telfone = request.form.get('telefone')
+        cep = request.form.get('cep')
+        comissao = request.form.get('comissao')
         quartos = request.form.get('quartos')
         suites = request.form.get('suites')
         salas = request.form.get('salas')
         cozinhas = request.form.get('cozinhas')
-        valor = float(request.form.get('valor'))  # Convert to float
-        rua = request.form.get('rua')
+        garagem = request.form.get('garagem')
+        valor = float(request.form.get('valor'))  
+        endereco = request.form.get('endereco')
         numero = request.form.get('numero')
         bairro = request.form.get('bairro')
         cidade = request.form.get('cidade')
         estado = request.form.get('estado')
         area = request.form.get('area')
         descricao = request.form.get('descricao')
-        #imagem = request.form.get('imagem')  # Obter a URL da imagem
-        imagem = request.files['imagem']  # Obter o arquivo da imagem
-        imagem_path = None  # Assign a default value
 
         piscina = 'piscina' in request.form
         praia = 'praia' in request.form
         lazer = 'lazer' in request.form
-        quintal = 'quintal' in request.form
-        jardim = 'jardim' in request.form
+        festa = 'festa'in request.form
+        gourmet = 'gourmet' in request.form
         varanda = 'varanda' in request.form
         solarium = 'solarium' in request.form
         quadra = 'quadra' in request.form
         elevador = 'elevador' in request.form
-
-        if imagem:
-            # Gerar um nome de arquivo único
-            temp_filename = str(uuid.uuid4()) + '.jpg'
-
-            # Salvar a imagem no sistema de arquivos
-            imagem_path = os.path.join(app.config['UPLOAD_FOLDER'], temp_filename)
-            imagem.save(imagem_path)
-
-            # Atualizar o documento da propriedade com o nome do arquivo
-            propriedade['imagem'] = temp_filename
-
 
         # Atualizar os valores da propriedade no banco de dados
         collection.update_one(
             {'_id': ObjectId(id)},
             {'$set': {
                 'tipo': tipo,
+                'proprietario': proprietario,
+                'construtora': construtora,
+                'nome_empreendimento': nome_empreendimento,
+                'telefone': telfone,
+                'cep':cep,
+                'comissao': comissao,
                 'quartos': quartos,
                 'suites': suites,
                 'salas': salas,
                 'cozinhas': cozinhas,
+                'garagem': garagem,
                 'valor': valor,
-                'rua': rua,
+                'endereco': endereco,
                 'numero': numero,
                 'bairro': bairro,
                 'cidade': cidade,
                 'estado': estado,
                 'area': area,
                 'descricao': descricao,
-                'imagem': imagem,
                 'piscina': piscina,
                 'praia': praia,
                 'lazer': lazer,
-                'quintal': quintal,
-                'jardim': jardim,
+                'festa': festa,
+                'gourmet': gourmet,
                 'varanda': varanda,
                 'solarium': solarium,
                 'quadra': quadra,
@@ -420,7 +388,7 @@ def editar_propriedade(id):
             }}
         )
 
-        return redirect('/propriedades')
+        return redirect('/propriedades/update')
     else:
         editar_imovel = collection.find_one({'_id': ObjectId(id)})
         if editar_imovel:
@@ -447,7 +415,7 @@ def confirmar_exclusao(id):
     if excluir_imovel:
         if request.method == 'POST':
             collection.delete_one({'_id': ObjectId(id)})
-            return redirect('/propriedades')
+            return redirect('/propriedades/delete')
 
         return render_template('excluir_propriedade.html', excluir_imovel=excluir_imovel)
 
