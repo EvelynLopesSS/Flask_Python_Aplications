@@ -49,12 +49,13 @@ def area_corretor():
     total_documents = collection.count_documents({})
     total_corretores = len(collection.distinct('corretor'))
     total_vendidos = collection.count_documents({'vendido': True})
-
+    collection_data = collection.find({}, {'_id': 0})
 
 
 
     return render_template('area_corretor.html', show_dashboard=show_dashboard, nome_pessoa=nome_pessoa,
-                           total_documents=total_documents,total_corretores=total_corretores, total_vendidos=total_vendidos)
+                           total_documents=total_documents,total_corretores=total_corretores,
+                           total_vendidos=total_vendidos, collection_data=collection_data)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -98,7 +99,7 @@ def cadastro():
         # Inserir os dados na coleção 'acessos'
         collection_acessos.insert_one(acessos)
 
-        return render_template('cadastro_corretor.html')
+        return render_template('sucess_corretor.html')
 
     return render_template('cadastro_corretor.html')
 
@@ -226,7 +227,7 @@ def nova_propriedade():
         salas = request.form.get('salas')
         cozinhas = request.form.get('cozinhas')
         garagem = request.form.get('garagem')
-        valor = float(request.form.get('valor'))  # Converter para float, por causa dos filtros.
+        valor = float(request.form.get('valor'))  # Convert to float
         endereco = request.form.get('endereco')
         numero = request.form.get('numero')
         bairro = request.form.get('bairro')
@@ -297,6 +298,9 @@ def delete_secess():
 def update_secess():
     return render_template('update_sucess.html')
 
+@app.route('/propriedades/sucess_corretor')
+def corretor_secess():
+    return render_template('sucess_corretor.html')
 
 
 
@@ -306,7 +310,7 @@ def exibir_propriedade(id):
     if exibir_imovel:
         valor = exibir_imovel.get('valor')
         if valor is not None:
-            locale = 'pt_BR'  
+            locale = 'pt_BR'  # Set the appropriate locale for formatting currency
             valor_formatado = format_currency(valor, 'BRL', locale=locale)
         else:
             valor_formatado = None
@@ -333,7 +337,7 @@ def editar_propriedade(id):
         salas = request.form.get('salas')
         cozinhas = request.form.get('cozinhas')
         garagem = request.form.get('garagem')
-        valor = float(request.form.get('valor'))  
+        valor = float(request.form.get('valor'))  # Convert to float
         endereco = request.form.get('endereco')
         numero = request.form.get('numero')
         bairro = request.form.get('bairro')
