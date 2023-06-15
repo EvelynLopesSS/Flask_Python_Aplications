@@ -1,0 +1,37 @@
+{% extends "template.html" %}
+
+{% block content %}
+    <style>
+        body {
+            background-image: url('https://static.vecteezy.com/ti/vetor-gratis/p2/2285604-preto-abstrato-fundo-com-caracteristicas-de-sobreposicao-vetor.jpg');
+            background-size: cover;
+            background-position: botton;
+            background-repeat: no-repeat;
+
+        }
+
+        .card {
+            background-color: rgba(255, 0, 0, 0.4);
+            margin-top: 150px;
+
+
+        }
+    </style>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        {% if excluir_imovel %}
+                            <h1 class="card-title">Confirmar Exclusão</h1>
+                            <p class="card-text">Deseja realmente excluir o imóvel?</p>
+                            <form action="/propriedades/excluir/{{ excluir_imovel._id }}" method="POST" style="margin-left: 40%;">
+                                <button type="submit" class="btn btn-danger">Excluir</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

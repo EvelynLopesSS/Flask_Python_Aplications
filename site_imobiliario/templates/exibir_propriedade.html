@@ -1,0 +1,183 @@
+{% extends "template.html" %}
+
+{% block content %}
+
+<style>
+    .line {
+        width: 200%;
+        height: 1px;
+        background-color: #fff;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    .line-2 {
+        width: 100%;
+        height: 1px;
+        background-color: #fff;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    .card {
+        background-image: url('https://th.bing.com/th/id/OIP.yXkl7KmU2dhH61gfeRMAKAHaE7?pid=ImgDet&rs=1');
+        background-size: cover;
+        background-position: center;
+        width: 500px;
+        height: 310px;
+        float: left;
+        margin-right: 20px;
+    }
+
+    .column-left {
+        float: left;
+        width: 50%;
+    }
+
+    .column-right {
+        float: left;
+        width: 50%;
+    }
+
+    .column-bottom-left,
+    .column-bottom-right {
+        float: left;
+        width: 50%;
+    }
+
+
+   .property-carac {
+        display: flex;
+        align-items: center;
+        font-size: 15px;
+
+    }
+
+   .property-carac p {
+        margin-right: 80px;
+        font-size: 20px;
+   }
+
+   .column-bottom-right {
+        overflow: hidden;
+   }
+
+    .column-bottom-right-left {
+        float: left;
+        width: 50%;
+    }
+
+    .column-bottom-right-right {
+        float: right;
+        width: 50%;
+    }
+    .line-3 {
+            width: 100%;
+            height: 1px;
+            background-color: #fff;
+            clear: both;
+    }
+    .column-info {
+        float: left;
+        width: 50%;
+    }
+
+    .column-description {
+        float: left;
+        width: 50%;
+    }
+
+</style>
+
+<div class="container">
+    <div class="column-left">
+        <h1>Informações da Propriedade</h1>
+        <div class="line"></div>
+        <div class="card"></div>
+    </div>
+    <div class="column-right">
+        <br> <br> <br>
+        <h2>{{ propriedade.tipo if propriedade else 'Propriedade não encontrada' }}</h2>
+        <p>Valor: {{ valor_formatado if valor_formatado else 'N/A' }}</p>
+        <p>Área: {{ propriedade.area }} m²</p>
+        <p>Endereço: {{ propriedade.endereco }},  {{ propriedade.numero }} , {{ propriedade.nome_empreendimento }} .</p>
+        <p> Bairro: {{ propriedade.bairro }}</p>
+        <p>Cidade: {{ propriedade.cidade }} </p>
+        <p>Estado: {{ propriedade.estado }} </p>
+        <p>CEP: {{ propriedade.cep }} </p>
+
+    </div>
+
+    <div style="clear:both;"></div>
+    <div class="line-2"></div>
+
+    <div class="column-bottom-left">
+         <h3> <i class="fas fa-check-square"></i> Características da Propriedade</h3>
+            <div class="property-carac">
+                <p><i class="fas fa-bed"></i><br>{{ propriedade.quartos if propriedade.quartos else '-' }}</p>
+                <p><i class="fas fa-bath"></i><br>{{ propriedade.suites if propriedade.suites else '-' }}</p>
+                <p><i class="fas fa-couch"></i><br>{{ propriedade.salas if propriedade.salas else '-' }}</p>
+                <p><i class="fas fa-utensils"></i><br>{{ propriedade.cozinhas if propriedade.cozinhas else '-' }}</p>
+                <p><i class="fas fa-car"></i><br>{{ propriedade.garagem if propriedade.garagem else '-' }}</p>
+            </div>
+    </div>
+    <div class="column-bottom-right">
+        <div class="column-bottom-right-left"> <br>
+                {% if propriedade.piscina %}
+                    <p><i class="fas fa-check"></i> Piscina</p>
+                {% endif %}
+                {% if propriedade.praia %}
+                    <p><i class="fas fa-check"></i> Beira Mar</p>
+                {% endif %}
+                {% if propriedade.lazer %}
+                    <p><i class="fas fa-check"></i> Área de Lazer</p>
+                {% endif %}
+                {% if propriedade.festa %}
+                    <p><i class="fas fa-check"></i> Salão de Festa</p>
+                {% endif %}
+                {% if propriedade.gourmet %}
+                    <p><i class="fas fa-check"></i> Área Gourmet</p>
+                {% endif %}
+            </div>
+            <div class="column-bottom-right-right"> <br>
+                {% if propriedade.varanda %}
+                    <p><i class="fas fa-check"></i> Varanda</p>
+                {% endif %}
+                {% if propriedade.solarium %}
+                    <p><i class="fas fa-check"></i> Solarium</p>
+                {% endif %}
+                {% if propriedade.quadra %}
+                    <p><i class="fas fa-check"></i> Quadra</p>
+                {% endif %}
+                {% if propriedade.elevador %}
+                    <p><i class="fas fa-check"></i> Elevador</p>
+                {% endif %}
+            </div>
+    </div>
+    <hr class="line-3" />
+    <div class="column-info">
+            <h3> <i class="fas fa-info-circle"></i> Informações</h3>
+            {% if propriedade.proprietario %}
+                <p>Proprietário: {{ propriedade.proprietario }}</p>
+            {% endif %}
+            {% if propriedade.construtora %}
+                <p>Construtora: {{ propriedade.construtora }}</p>
+            {% endif %}
+            {% if propriedade.telefone %}
+                <p>Telefone: {{ propriedade.telefone }}</p>
+            {% endif %}
+            {% if propriedade.comissao %}
+                <p>Comissão: {{ propriedade.comissao }}%</p>
+            {% endif %}
+        </div>
+        <div class="column-description">
+            <h3><i class="fas fa-list"></i> Descrição<br></h3>
+            <p>{{ propriedade.descricao if propriedade.descricao else 'Sem Descrição.' }}</p>
+        </div>
+    <hr class="line-3" />
+    <a href="/propriedades" class="btn btn-warning">Procurar mais Imóveis</a>
+    <a href="{{ url_for('editar_propriedade', id=propriedade['_id']) }}" style="margin-left: 780px;" class="btn btn-success">Editar</a>
+    <a href="{{ url_for('confirmar_exclusao', id=propriedade['_id']) }}" class="btn btn-danger">Excluir</a>
+    <br> <br>
+</div>
+
+{% endblock %}

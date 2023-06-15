@@ -1,0 +1,75 @@
+{% extends 'template.html' %}
+
+{% block content %}
+    <style>
+        body {
+            background-image: url("https://www.arealpires.com.br/wp-content/uploads/2017/12/Corretor-Imobili--ria-Incorporadora.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+
+        }
+
+        .card {
+            width: 300px;
+            margin: 100px;
+            float: right;
+            opacity: 0.9;
+            height: 350px;
+        }
+
+        .card-title {
+            text-align: center;
+            margin-bottom: 20px;
+            margin-top: 20px;
+
+
+        }
+
+        .form-control.custom-input {
+            border-radius: 10px;
+        }
+
+        .form-label {
+            color: white;
+        }
+
+        .custom-input-group {
+            display: flex;
+            justify-content: space-between;
+        }
+
+
+
+
+    </style>
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Login</h4>
+                <form  action="/login" method="POST">
+                    <style>
+                        .custom-input {
+                            background-color: transparent;
+                            border-color: #ffc107;
+                            font-size: small;
+                            color: white;
+                        }
+                    </style>
+                    <div class="position-relative">
+                        <label  class="form-label">CPF do Usuário</label>
+                        <input type="text" class="form-control custom-input" id="CPF_corretor" name="CPF_corretor" >
+                    </div>
+                    <div class="position-relative">
+                        <label  class="form-label">Senha</label>
+                        <input type="password" class="form-control custom-input" id="senha_corretor" name="senha_corretor" >
+                    </div>
+                    <br>
+                    <div class="text-center mt-3">
+                        <button class="btn btn-warning" type="submit" id="login-btn">Entrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

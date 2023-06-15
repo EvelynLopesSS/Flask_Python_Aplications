@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <style>
+        body {
+            padding-top: 56px;
+            background: linear-gradient(to top, #ffff99, #ffffe0);
+
+
+        }
+
+        .navbar {
+            background-color: #343a40;
+            color: white;
+        }
+
+        .navbar-brand {
+            font-size: 24px;
+            margin-right: auto;
+            margin-left: -110px;
+        }
+
+        .user-icon {
+            margin-left: auto;
+            margin-right: -80px;
+        }
+
+        .sidebar {
+            background-color: #343a40;
+            color: white;
+            height: 100vh;
+            width: 250px;
+            opacity: ;
+        }
+
+        .sidebar a {
+            color: white;
+            margin-top: 30px;
+        }
+
+        .sidebar a:hover {
+            color: #ffc107;
+            background-color: #ffffe0  ;
+            height: 10vh;
+        }
+
+        .content {
+            margin-left: 30px;
+            margin-top: -670px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">Área do Corretor</a>
+            <div class="user-icon">
+                {{ nome_pessoa }} <i class="fa fa-user"></i>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="sidebar">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/area_corretor"><i class="fas fa-chart-line {% if not show_dashboard %}active{% endif %}"></i> Reports</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="area_corretor?dashboard=True"><i class="fas fa-chart-bar {% if show_dashboard %}active{% endif %}"></i> Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/propriedades"><i class="fas fa-search"></i> Pesquisar Imóveis </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/cadastro_corretor"><i class="fas fa-user-plus"></i> Cadastro Corretor</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/propriedades/nova"><i class="fas fa-file-signature"></i> Cadastro imóvel</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/"><i class="fas fa-door-open"></i> Sair</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-10 offset-2">
+                <div class="content" >
+                    {% if show_dashboard %}
+                    <iframe title="Report Section" width="1140" height="642.25" src="https://app.powerbi.com/view?r=eyJrIjoiODA0NGYwOTEtYzM4MS00MmE3LTlhMTAtYmFjZThkZjUyYmVjIiwidCI6IjJiYTIyMTYyLWY2NDQtNGE0Yy05OWY5LTlhZWM3YjAzODNiNSJ9" frameborder="0" allowFullScreen="true"></iframe>
+                    {% endif %}
+                </div>
+            </div>
+             <div class="col-10 offset-2">
+                <div class="content">
+                    {% if not show_dashboard %}
+                    <div class="row">
+                        <div class="col-4" >
+                            <div class="card border-warning mb-3 " >
+                                <div class="card-body text-secondary">
+                                    <h5 class="card-title">Quantidade de Imóveis</h5>
+                                    <p class="card-text">{{ total_documents }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="card border-warning mb-3 ">
+                                <div class="card-body text-secondary">
+                                    <h5 class="card-title">Quantidade de Corretores</h5>
+                                    <p class="card-text">{{ total_corretores }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="card border-warning mb-3 ">
+                                <div class="card-body text-secondary">
+                                    <h5 class="card-title">Número de Imóveis Vendidos</h5>
+                                    <p class="card-text">{{ total_vendidos }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row" >
+                        <h2> Tabela de Imóveis </h2>
+                      <div class="table-responsive" style="height: 400px; width: 99%;">
+                          <table class="table table-warning ">
+                                <thead>
+                                    <tr>
+                                        {% for key in collection_data[0].keys() %}
+                                        <th>{{ key }}</th>
+                                        {% endfor %}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for imovel in collection_data %}
+                                    {% if loop.index is divisibleby(2) %}
+                                    <tr class="table-light">
+                                    {% else %}
+                                    <tr class="table-secondary">
+                                    {% endif %}
+                                        {% for value in imovel.values() %}
+                                        <td>{{ value }}</td>
+                                        {% endfor %}
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                          </table>
+                      </div>
+
+
+                    </div>
+                 {% endif %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

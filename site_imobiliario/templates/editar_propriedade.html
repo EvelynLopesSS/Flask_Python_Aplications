@@ -1,0 +1,242 @@
+{% extends "template.html" %}
+
+{% block content %}
+<style>
+    body {
+        background-image: url("https://th.bing.com/th/id/R.6b142f7247d189b6e2b5d6d7b3237f1b?rik=4xtHeHLdTQUsmQ&riu=http%3a%2f%2fgranbery.edu.br%2fblog%2fwp-content%2fuploads%2f2018%2f07%2fpredios-1.jpg&ehk=agNjyMIfZCFcf8d%2bLZkoO0EDUeC2%2bOpARVF8U8s3Y%2bE%3d&risl=&pid=ImgRaw&r=0");
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+    .card {
+        width: 700px;
+        height: 900px;
+        opacity: 0.9;
+        margin-left: 200px;
+        margin-top: 90px;
+        margin-bottom: 50px;
+        align-items: center;
+        justify-content: left;
+    }
+    .form-control {
+        border-radius: 0px;
+        background-color: transparent;
+        border-color: #ffc107;
+        font-size: small;
+        color: white;
+    }
+
+    .form-group.row {
+        margin-bottom: 1px;
+        margin-top: 10px;
+        margin-left: 10px;
+    }
+    .checkbox-group {
+        display: flex;
+        align-items: center;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+        opacity: 0;
+        position: absolute;
+        cursor: pointer;
+    }
+
+    .checkbox-group input[type="checkbox"] + label {
+        position: relative;
+        padding-left: 30px;
+        cursor: pointer;
+        color: white;
+    }
+
+    .checkbox-group input[type="checkbox"] + label:before {
+        content:  "";
+        color: #ffc107; /* Color of the check symbol */
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 20px;
+        height: 20px;
+        border: 1px solid #ffc107;
+        background-color: transparent;
+        border-radius: 3px;
+    }
+
+    .checkbox-group input[type="checkbox"]:checked + label:before {
+        background-color: transparent;
+        content:  "\2713";
+        color: #ffc107;
+        font-size: 30px;
+        text-align: center;
+        line-height: 10px;
+        border-width: 0.5px;
+    }
+</style>
+<div class="container">
+  <div class="card">
+    <br>
+    <h2>
+      <i class="fas fa-building"></i>
+        <i class="fas fa-home"></i>
+        Editar Propriedade
+        <i class="fas fa-home"></i>
+        <i class="fas fa-building"></i>
+    </h2>
+    <br>
+    <form method="POST" action="/propriedades/{{ editar_imovel._id }}/editar">
+      <div class="row">
+        <div class="col">
+          <select class="form-control" name="tipo" id="tipo">
+            <option value="Casa" {% if editar_imovel.tipo =='Casa' %} selected {% endif %}>Casa</option>
+            <option value="Terreno" {% if editar_imovel.tipo =='Terreno' %} selected {% endif %}>Terreno</option>
+            <option value="Apartamento" {% if editar_imovel.tipo =='Apartamento' %} selected {% endif %}>Apartamento</option>
+            <option value="Flat" {% if editar_imovel.tipo =='Flat' %} selected {% endif %}>Flat</option>
+          </select>
+        </div>
+        <div class="col">
+          <input class="form-control" type="text" name="proprietario" id="proprietario"  placeholder="Proprietário" value="{{ editar_imovel.proprietario }}">
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col">
+          <input class="form-control" type="text" name="construtora" id="construtora" placeholder="Construtora" value="{{ editar_imovel.construtora }}">
+        </div>
+        <div class="col">
+          <input class="form-control" type="text" name="telefone" id="telefone" placeholder="Telefone" value="{{ editar_imovel.telefone }}">
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col">
+          <input class="form-control" type="number" step="any" name="valor" id="valor" placeholder="Valor do Imóvel" value="{{ editar_imovel.valor }}">
+        </div>
+        <div class="col">
+          <input class="form-control" type="text" name="comissao" id="comissao"  placeholder="Porcentagem da Comissão" value="{{ editar_imovel.comissao }}">
+        </div>
+        <div class="col">
+          <input class="form-control" type="number" name="area" id="area" placeholder="Área do Imóvel" value="{{ editar_imovel.area }}">
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col">
+          <input class="form-control" type="text" name="endereco" id="endereco" placeholder="Endereço" value="{{ editar_imovel.endereco }}">
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col">
+          <input class="form-control" type="text" name="numero" id="numero" placeholder="Número" value="{{ editar_imovel.numero }}">
+        </div>
+        <div class="col">
+          <input class="form-control" type="text" name="nome_empreendimento" id="nome_empreendimento"  placeholder="Nome Empreendimento" value="{{ editar_imovel.nome_empreendimento }}">
+        </div>
+        <div class="col">
+          <input class="form-control" type="text" name="cep" id="cep"  placeholder="CEP" value="{{ editar_imovel.cep }}">
+        </div>
+       </div>
+      <br>
+      <div class="row">
+        <div class="col">
+          <input class="form-control" type="text" name="bairro" id="bairro" placeholder="Bairro" value="{{ editar_imovel.bairro }}">
+        </div>
+        <div class="col">
+          <input class="form-control" type="text" name="cidade" id="cidade" placeholder="Cidade" value="{{ editar_imovel.cidade }}">
+        </div>
+        <div class="col">
+          <input class="form-control" type="text" name="estado" id="estado" placeholder="Estado" value="{{ editar_imovel.estado }}">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <label for="quartos"></label>
+          <input class="form-control" type="number" name="quartos" id="quartos" placeholder="Quantidade de Quartos" value="{{ editar_imovel.quartos }}">
+        </div>
+        <div class="col">
+          <label for="suites"></label>
+          <input class="form-control" type="number" name="suites" id="suites" placeholder="Quantidade de Suítes" value="{{ editar_imovel.suites }}">
+        </div>
+        <div class="col">
+          <label for="salas"></label>
+          <input class="form-control" type="number" name="salas" id="salas" placeholder="Quantidade de Salas" value="{{ editar_imovel.salas }}">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label for="cozinhas"></label>
+          <input class="form-control" type="number" name="cozinhas" id="cozinhas" placeholder="Quantidade de Cozinhas" value="{{ editar_imovel.cozinhas }}">
+        </div>
+        <div class="col">
+          <label for="garagem"></label>
+          <input class="form-control" type="number" name="garagem" id="garagem" placeholder="Quantidade de Garagens" value="{{ editar_imovel.garagem }}">
+        </div>
+        <div class="col">
+          <label ></label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <label for="descricao"></label>
+          <textarea class="form-control description-box" name="descricao" id="descricao" placeholder="Descrição">{{ editar_imovel.descricao }}</textarea>
+        </div>
+      </div>
+      <br>
+      <h4> <i class="fas fa-check-square"></i> Características</h4> <br>
+      <div class="row">
+        <div class="col">
+          <div class="checkbox-group">
+                <input type="checkbox" name="piscina" id="piscina" {% if editar_imovel.piscina %} checked {% endif %}>
+                <label for="piscina">Piscina</label>
+          </div>
+
+          <div class="checkbox-group">
+                <input type="checkbox" name="praia" id="praia" {% if editar_imovel.praia %} checked {% endif %}>
+                <label for="praia">Beira Mar</label>
+          </div>
+
+          <div class="checkbox-group">
+                <input type="checkbox" name="lazer" id="lazer" {% if editar_imovel.lazer %} checked {% endif %}>
+                <label for="lazer">Área de Lazer</label>
+          </div>
+        </div>
+
+        <div class="col">
+            <div class="checkbox-group">
+                <input type="checkbox" name="quintal" id="festa" {% if editar_imovel.festa %} checked {% endif %}>
+                <label for="festa">Salão de Festas</label>
+            </div>
+           <div class="checkbox-group">
+              <input type="checkbox" name="jardim" id="gourmet" {% if editar_imovel.gourmet %} checked {% endif %}>
+              <label for="gourmet">Área Gourmet</label>
+            </div>
+          <div class="checkbox-group">
+              <input type="checkbox" name="varanda" id="varanda" {% if editar_imovel.varanda %} checked {% endif %}>
+              <label for="academia">Varanda</label>
+          </div>
+        </div>
+        <div class="col">
+            <div class="checkbox-group">
+                <input type="checkbox" name="solarium" id="solarium" {% if editar_imovel.solarium %} checked {% endif %}>
+                <label for="festa">Solarium</label>
+            </div>
+           <div class="checkbox-group">
+              <input type="checkbox" name="jardim" id="quadra" {% if editar_imovel.quadra %} checked {% endif %}>
+              <label for="gourmet">Quadra de Esporte</label>
+            </div>
+          <div class="checkbox-group">
+              <input type="checkbox" name="elevador" id="elevador" {% if editar_imovel.elevador %} checked {% endif %}>
+              <label for="academia">Elevador</label>
+          </div>
+        </div>
+      </div>
+      <br>
+      <div class="row text-center">
+        <div class="col">
+          <button type="submit" class="btn btn-warning">Atualizar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
