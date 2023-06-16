@@ -1,0 +1,68 @@
+    .input-card {
+        background-color: transparent;
+        border-color: #ffc107;
+        font-size: small;
+        color: white;
+    }
+    .fixed-card {
+        position: absolute;
+        top: 40;
+        left: 0;
+        z-index: 1000;
+        width: 100%;
+    }
+    .tipo-imovel {
+      font-size: 1.7rem;
+    }
+
+    .valor-imovel {
+      color: white;
+      font-weight: bold;
+      font-size: 1.7rem;
+      color: white;
+    }
+
+    .custom-card {
+        height: 50px;
+        width: 200px;
+        padding: 0px 0px;
+        margin-top: 1rem;
+    }
+    .card-body .row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-left: 13px;
+
+    }
+    .number-size {
+      font-size: 1.5rem;
+    }
+    .icon-size {
+      font-size: 1.6rem;
+    }
+
+    .footer {
+        padding: 20px 0;
+        text-align: center;
+    }
+
+    .footer-line {
+        margin-bottom: 10px;
+        border-bottom: 1px solid #ffffff;
+    }
+
+    .footer-icons {
+        margin-top: 10px;
+    }
+
+    .footer-icons a {
+        color: #f8f9fa;
+        margin-right: 10px;
+        font-size: 24px;
+    }
+
+    .footer-icons span {
+        color: #f8f9fa;
+        margin-right: 10px;
+    }
