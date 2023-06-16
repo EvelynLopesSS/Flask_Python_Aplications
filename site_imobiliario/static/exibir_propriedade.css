@@ -1,0 +1,82 @@
+   .line {
+        width: 200%;
+        height: 1px;
+        background-color: #fff;
+        margin-top: 10px;
+        margin-bottom: 10px;
+   }
+   .line-2 {
+        width: 100%;
+        height: 1px;
+        background-color: #fff;
+        margin-top: 10px;
+        margin-bottom: 10px;
+   }
+
+   .card {
+        background-image: url('https://th.bing.com/th/id/OIP.yXkl7KmU2dhH61gfeRMAKAHaE7?pid=ImgDet&rs=1');
+        background-size: cover;
+        background-position: center;
+        width: 500px;
+        height: 310px;
+        float: left;
+        margin-right: 20px;
+   }
+
+   .column-left {
+        float: left;
+        width: 50%;
+   }
+
+   .column-right {
+        float: left;
+        width: 50%;
+   }
+
+   .column-bottom-left,
+   .column-bottom-right {
+        float: left;
+        width: 50%;
+   }
+
+
+   .property-carac {
+        display: flex;
+        align-items: center;
+        font-size: 15px;
+
+   }
+
+   .property-carac p {
+        margin-right: 80px;
+        font-size: 20px;
+   }
+
+   .column-bottom-right {
+        overflow: hidden;
+   }
+
+   .column-bottom-right-left {
+        float: left;
+        width: 50%;
+   }
+
+   .column-bottom-right-right {
+        float: right;
+        width: 50%;
+   }
+   .line-3 {
+            width: 100%;
+            height: 1px;
+            background-color: #fff;
+            clear: both;
+    }
+   .column-info {
+        float: left;
+        width: 50%;
+   }
+
+   .column-description {
+        float: left;
+        width: 50%;
+   }
