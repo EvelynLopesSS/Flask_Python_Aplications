@@ -1,88 +1,14 @@
+
 {% extends 'template.html' %}
 
 {% block content %}
-    <style>
-        body {
-            background-image: url("https://www.arealpires.com.br/wp-content/uploads/2017/12/Corretor-Imobili--ria-Incorporadora.jpg");
-            background-repeat: no-repeat;
-            background-size: cover;
-        }
+<link rel="stylesheet" href="{{ url_for('static', filename='cadastro_corretor.css') }}">
 
-        .card {
-            width: 400px;
-            margin: 50px;
-            float: right;
-            opacity: 0.9;
-        }
-
-        .card-title {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .form-control.custom-input {
-            border-radius: 10px;
-        }
-
-        .form-label {
-            color: white;
-        }
-
-        .custom-input-group {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        /* Estilos para o modal */
-        .modal-backdrop {
-            z-index: 1050 !important;
-        }
-
-        .modal {
-            z-index: 1060 !important;
-        }
-
-        /* Estilos para o alerta */
-        .alert {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 1070;
-            width: 300px;
-            background-color: #28a745;
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            text-align: center;
-        }
-
-        .alert.show {
-            display: block;
-        }
-
-        .alert-close {
-            position: absolute;
-            top: 5px;
-            right: 10px;
-            color: white;
-            cursor: pointer;
-        }
-    </style>
     <div class="container">
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Cadastro de Corretor</h4>
                 <form action="/cadastro_corretor" method="POST">
-                    <style>
-                        .custom-input {
-                            background-color: transparent;
-                            border-color: #ffc107;
-                            font-size: small;
-                            color: white;
-                        }
-                    </style>
                     <div class="position-relative">
                         <label  class="form-label">Nome</label>
                         <input type="text" class="form-control custom-input" id="nome_corretor" name="nome_corretor" >
