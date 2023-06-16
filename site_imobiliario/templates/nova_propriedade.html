@@ -1,77 +1,9 @@
 {% extends "template.html" %}
 
 {% block content %}
-<style >
-    body {
-        background-image: url("https://th.bing.com/th/id/R.6b142f7247d189b6e2b5d6d7b3237f1b?rik=4xtHeHLdTQUsmQ&riu=http%3a%2f%2fgranbery.edu.br%2fblog%2fwp-content%2fuploads%2f2018%2f07%2fpredios-1.jpg&ehk=agNjyMIfZCFcf8d%2bLZkoO0EDUeC2%2bOpARVF8U8s3Y%2bE%3d&risl=&pid=ImgRaw&r=0");
-        background-size: cover;
-        background-repeat: no-repeat;
-=
-    }
-    .card {
-       width: 700px;
-       height: 900px;
-       opacity: 0.9;
-       margin-left: 200px;
-       margin-top: 90px;
-       margin-bottom: 50px;
-       align-items: center;
-       justify-content: left;
-    }
-    .form-control {
-        border-radius: 0px;
-        background-color: transparent;
-        border-color: #ffc107;
-        font-size: small;
-        color: white;
-    }
+<link rel="stylesheet" href="{{ url_for('static', filename='nova_propriedade.css') }}">
 
-    .form-group.row {
-        margin-bottom: 1px;
-        margin-top: 10px;
-        margin-left: 10px;
-    }
-    .checkbox-group {
-        display: flex;
-        align-items: center;
-    }
 
-    .checkbox-group input[type="checkbox"] {
-        opacity: 0;
-        position: absolute;
-        cursor: pointer;
-    }
-
-    .checkbox-group input[type="checkbox"] + label {
-        position: relative;
-        padding-left: 30px;
-        cursor: pointer;
-        color: white;
-    }
-
-    .checkbox-group input[type="checkbox"] + label:before {
-        content:  "";
-        color: #ffc107; /* Color of the check symbol */
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 20px;
-        height: 20px;
-        border: 1px solid #ffc107;
-        background-color: transparent;
-        border-radius: 3px;
-    }
-
-    .checkbox-group input[type="checkbox"]:checked + label:before {
-        background-color: transparent;
-        content:  "\2713";
-        color: #ffc107;
-        font-size: 30px;
-        text-align: center;
-        line-height: 10px;
-        border-width: 0.5px;
-    }
-</style>
 <div class="container">
   <div class="card">
     <br>
