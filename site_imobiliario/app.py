@@ -19,7 +19,7 @@ from babel import numbers
 
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static')
 client = MongoClient('')
 db = client['Imobiliaria']  # Nome do banco de dados no MongoDB
 collection = db['propriedades']  # Nome da coleção no MongoDB
