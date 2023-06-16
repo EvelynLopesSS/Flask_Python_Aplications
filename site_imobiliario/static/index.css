@@ -1,0 +1,114 @@
+.position-relative {
+        position: relative;
+    }
+
+    .card-overlay {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        transform: translateY(-50%);
+        display: flex;
+        justify-content: left;
+        align-items: center;
+        height: 787px;
+    }
+
+    .card-overlay-content {
+        text-align: left;
+        color: white;
+        padding: 20px;
+    }
+
+    .btn-link.text-white {
+        color: #ffc107;
+    }
+
+    .btn-link.text-white:hover {
+        color: #ffc107;
+    }
+
+    .footer {
+        padding: 20px 0;
+        text-align: center;
+    }
+
+    .footer-line {
+        margin-bottom: 10px;
+        border-bottom: 1px solid #ffffff;
+    }
+
+    .footer-icons {
+        margin-top: 10px;
+    }
+
+    .footer-icons a {
+        color: #f8f9fa;
+        margin-right: 10px;
+        font-size: 24px; /* Tamanho dos ícones */
+    }
+
+    .footer-icons span {
+        color: #f8f9fa;
+        margin-right: 10px;
+    }
+
+    .filter-card {
+        background-image: url('https://thumbs.dreamstime.com/b/fam%C3%ADlia-apontando-com-os-dedos-enquanto-olha-feliz-para-cima-em-branco-203625648.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 600px;
+        width: 355px;
+    }
+
+    .custom-col {
+        margin-bottom: -2px; /* Espaçamento entre as linhas */
+    }
+
+    .yellow-card-top {
+        background-color: rgba(204, 175, 77, 0.9);
+        padding: 20px;
+        margin-bottom: 10px;
+    }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+        top: 50%;
+        transform: translateY(-50%);
+        bottom: auto;
+    }
+
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+        background-color: rgba(0, 0, 0, 0.5);
+        width:20px;
+        height: 20px;
+        border-radius: 50%;
+        line-height: 40px;
+        font-size: 20px;
+    }
+
+    .carousel-control-prev-icon {
+        margin-left: -30px;
+    }
+
+    .carousel-control-next-icon {
+        margin-right: -60px;
+    }
+   .custom-nav-item {
+        margin-right: 100px;
+
+    }
+   .custom-nav-item .nav-link {
+        color: white !important;
+    }
+
+   .custom-nav-item .nav-link i {
+        color: white;
+    }
+
+   .bg-custom {
+        background-color: rgba(204, 175, 77, 0.9) !important;
+   }
